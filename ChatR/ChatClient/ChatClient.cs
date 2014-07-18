@@ -57,14 +57,17 @@ namespace ChatR.ChatClient
                 }
                 case "JOIN":
                 {
+                    _eventSink.OnJoin(tokens[1]);
                     break;
                 }
                 case "LEAVE":
                 {
+                    _eventSink.OnLeave(tokens[1]);
                     break;
                 }
                 case "LIST":
                 {
+                    _eventSink.OnList(tokens.Skip(1).ToArray());
                     break;
                 }
             }

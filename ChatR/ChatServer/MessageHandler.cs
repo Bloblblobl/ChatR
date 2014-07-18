@@ -23,7 +23,7 @@ namespace ChatR.ChatServer
             lock (_lock)
             {
                 var command = message.Substring(0, 5);
-                var content = message.Remove(5);
+                var content = message.Substring(5);
 
                 var client = _clients[sender];
 
@@ -31,24 +31,41 @@ namespace ChatR.ChatServer
                 {
                     // Set nickname of sender to specified nickname
                     client.Name = content;
+                    var names = new List<string>();
 
+                    foreach (KeyValuePair<Socket, Client> c in _clients)
+                    {
+                        var sw = c.Value.StreamWriter;
+                        sw.WriteLine("JOIN " + client.Name);
+                        if (c.Value.Name == _clients[sender].Name)
+                        {
+                            continue;
+                        }
+                        names.Add(c.Value.Name);
+                    }
+
+                    var text = string.Join(" ", names);
+
+                    client.StreamWriter.WriteLine("LIST " + text);
                 }
+
                 if (command == "LEAVE")
                 {
+                    _clients.Remove(sender);
+
+                    foreach (KeyValuePair<Socket, Client> c in _clients)
+                    {
+                        var sw = c.Value.StreamWriter;
+                        sw.WriteLine("LEAVE " + client.Name);
+                    }
                 }
-                if (command == "LIST ")
-                {
-                }
+
                 if (command == "MSG  ")
                 {
                     var toRemove = new List<Socket>();
 
                     foreach (var c in _clients)
                     {
-                        if (c.Key == sender)
-                        {
-                            continue;
-                        }
                         try
                         {
                             var sw = c.Value.StreamWriter;

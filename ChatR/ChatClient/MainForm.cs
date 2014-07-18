@@ -17,26 +17,43 @@ namespace ChatR.ChatClient
         {
             InitializeComponent();
             _client = new ChatClient();
-            _client.Connect(this, this);
-            _client.Join("Joihn");
         }
 
-        private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
+        private void SplitContainer_SplitterMoved(object sender, SplitterEventArgs e)
         {
-
+            // nothing here
         }
 
         private void Input_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode != Keys.Return)
+
+            
+        }
+
+        private void ConnectButton_Click(object sender, EventArgs e)
+        {
+            _client.Connect(this, this);
+            _client.Join(NameBox.Text);
+        }
+
+        private void NameBox_TextChanged(object sender, EventArgs e)
+        {
+            ConnectButton.Enabled = NameBox.Text.Length > 0;
+        }
+
+        private void Input_KeyDown(object sender, KeyEventArgs e)
+        {
+            if ((e.KeyCode == Keys.Enter) || (e.KeyCode == Keys.Tab))
             {
-                return;
+                // this.SelectNextControl(InputBox, true, true, true, true);
+                e.Handled = e.SuppressKeyPress = true;
+                if (e.KeyCode == Keys.Enter)
+                {
+                    var t = (TextBox)sender;
+                    string text = t.Text;
+                    _client.Send(text);
+                }
             }
-
-            var t = (TextBox)sender;
-            string text = t.Text;
-            _client.Send(text);
-
         }
     }
 }
