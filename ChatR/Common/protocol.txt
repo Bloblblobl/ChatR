@@ -1,0 +1,22 @@
+﻿Client 2 Server
+
+JOIN <nickname>
+LEAVE
+LIST
+MESSAGE <text>
+
+Server 2 Client
+
+Event             Target        Message       
+Receive JOIN      Everybody     JOIN <nickname>
+Receive LEAVE     Everybody     LEAVE <nickname>
+Receive LIST      Sender        LIST <nickname 1> <nickname 2> ... <nickname N>
+Receive MSG       Everybody     MESSAGE <nickname> <text>
+Client disconnect Everybody     LEAVE <nickname>            
+
+
+TODO:
+
+- Add nick name to client state on server (dictionary of socket -> (nick, stream) )
+- parse incoming messages (command is anything up to the first space)
+- handle each command

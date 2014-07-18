@@ -7,7 +7,7 @@ namespace ChatR.ChatServer
     public class Client
     {
         public StreamWriter StreamWriter;
-        public String Name;
+        public string Name;
         public Socket Socket;
 
         public Client(StreamWriter sw, Socket socket)
