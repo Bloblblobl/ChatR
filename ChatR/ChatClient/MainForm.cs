@@ -17,6 +17,8 @@ namespace ChatR.ChatClient
         {
             InitializeComponent();
             _client = new ChatClient();
+            NameBox.Enabled = true;
+            NameBox.Location = new Point(NameBox.Location.X, NameBox.Location.Y + 2);
             NameBox.Focus();
         }
 
@@ -67,6 +69,8 @@ namespace ChatR.ChatClient
             _client.Connect(this, this);
             _client.Join(NameBox.Text);
             InputBox.Focus();
+            ConnectButton.Enabled = false;
+            NameBox.Enabled = false;
         }
     }
 }

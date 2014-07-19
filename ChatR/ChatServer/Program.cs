@@ -18,7 +18,7 @@ namespace ChatR.ChatServer
             var port = Shared.port;
 
             // Create single TcpListener
-            var listener = new TcpListener (IPAddress.Parse("127.0.0.1"), port);
+            var listener = new TcpListener (IPAddress.Any, port);
             listener.Start ();
             while (true) 
             {
