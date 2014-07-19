@@ -1,0 +1,7 @@
+E:\Documents\ChatR\ChatR\ChatServer\bin\Release\ChatServer.exe
+E:\Documents\ChatR\ChatR\ChatServer\bin\Release\ChatServer.pdb
+E:\Documents\ChatR\ChatR\ChatServer\bin\Release\Common.dll
+E:\Documents\ChatR\ChatR\ChatServer\bin\Release\Common.pdb
+E:\Documents\ChatR\ChatR\ChatServer\obj\x86\Release\ChatServer.csprojResolveAssemblyReference.cache
+E:\Documents\ChatR\ChatR\ChatServer\obj\x86\Release\ChatServer.exe
+E:\Documents\ChatR\ChatR\ChatServer\obj\x86\Release\ChatServer.pdb

@@ -81,7 +81,6 @@
             this.InputBox.Size = new System.Drawing.Size(800, 20);
             this.InputBox.TabIndex = 0;
             this.InputBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Input_KeyDown);
-            this.InputBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Input_KeyUp);
             // 
             // SplitContainer2
             // 
@@ -121,6 +120,7 @@
             this.NameBox.Size = new System.Drawing.Size(99, 20);
             this.NameBox.TabIndex = 0;
             this.NameBox.TextChanged += new System.EventHandler(this.NameBox_TextChanged);
+            this.NameBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.NameBox_KeyDown);
             // 
             // Users
             // 
@@ -178,7 +178,13 @@
 
         public void OnList(string[] names)
         {
-            Users.Items.AddRange(names);
+            foreach (string s in names)
+            {
+                if (s.Length > 0)
+                {
+                    Users.Items.Add(s);
+                }
+            }
         }
 
         private System.Windows.Forms.SplitContainer SplitContainer2;

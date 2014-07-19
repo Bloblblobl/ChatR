@@ -22,5 +22,17 @@ namespace ChatR.ChatClient.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("192.168.1.126")]
+        public string IP {
+            get {
+                return ((string)(this["IP"]));
+            }
+            set {
+                this["IP"] = value;
+            }
+        }
     }
 }

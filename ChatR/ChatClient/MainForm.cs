@@ -17,6 +17,7 @@ namespace ChatR.ChatClient
         {
             InitializeComponent();
             _client = new ChatClient();
+            NameBox.Focus();
         }
 
         private void SplitContainer_SplitterMoved(object sender, SplitterEventArgs e)
@@ -24,16 +25,9 @@ namespace ChatR.ChatClient
             // nothing here
         }
 
-        private void Input_KeyUp(object sender, KeyEventArgs e)
-        {
-
-            
-        }
-
         private void ConnectButton_Click(object sender, EventArgs e)
         {
-            _client.Connect(this, this);
-            _client.Join(NameBox.Text);
+            Connect();
         }
 
         private void NameBox_TextChanged(object sender, EventArgs e)
@@ -45,15 +39,34 @@ namespace ChatR.ChatClient
         {
             if ((e.KeyCode == Keys.Enter) || (e.KeyCode == Keys.Tab))
             {
-                // this.SelectNextControl(InputBox, true, true, true, true);
                 e.Handled = e.SuppressKeyPress = true;
                 if (e.KeyCode == Keys.Enter)
                 {
                     var t = (TextBox)sender;
                     string text = t.Text;
                     _client.Send(text);
+                    InputBox.Text = "";
                 }
             }
+        }
+
+        private void NameBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if ((e.KeyCode == Keys.Enter) || (e.KeyCode == Keys.Tab))
+            {
+                e.Handled = e.SuppressKeyPress = true;
+                if (e.KeyCode == Keys.Enter)
+                {
+                    Connect();
+                }
+            }
+        }
+
+        private void Connect()
+        {
+            _client.Connect(this, this);
+            _client.Join(NameBox.Text);
+            InputBox.Focus();
         }
     }
 }

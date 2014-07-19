@@ -8,3 +8,4 @@ E:\Documents\ChatR\ChatR\ChatClient\bin\Debug\Common.pdb
 E:\Documents\ChatR\ChatR\ChatClient\obj\x86\Debug\ChatClient.csprojResolveAssemblyReference.cache
 E:\Documents\ChatR\ChatR\ChatClient\obj\x86\Debug\ChatR.ChatClient.MainForm.resources
 E:\Documents\ChatR\ChatR\ChatClient\obj\x86\Debug\ChatR.ChatClient.Properties.Resources.resources
+E:\Documents\ChatR\ChatR\ChatClient\bin\Debug\ChatClient.exe.config

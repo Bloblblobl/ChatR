@@ -23,7 +23,8 @@ namespace ChatR.ChatClient
             _eventSink = eventSink;
 
             // Connect to chat server
-            var client = new TcpClient("127.0.0.1", Shared.port);
+            var ip = Properties.Settings.Default.IP;
+            var client = new TcpClient(ip, Shared.port);
             var stream = client.GetStream();
             _reader = new StreamReader(stream);
             _writer = new StreamWriter(stream);

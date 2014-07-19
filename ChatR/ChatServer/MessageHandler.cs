@@ -44,9 +44,16 @@ namespace ChatR.ChatServer
                         names.Add(c.Value.Name);
                     }
 
-                    var text = string.Join(" ", names);
+                    var splitter = "";
 
-                    client.StreamWriter.WriteLine("LIST " + text);
+                    if (names.Capacity > 1)
+                    {
+                        splitter = " ";
+                    }
+
+                    var text = "LIST " + string.Join(splitter, names);
+
+                    client.StreamWriter.WriteLine(text);
                 }
 
                 if (command == "LEAVE")
@@ -69,6 +76,8 @@ namespace ChatR.ChatServer
                         try
                         {
                             var sw = c.Value.StreamWriter;
+                            var msgContent = message.Substring(5);
+                            message = "MSG " + _clients[sender].Name + " " + msgContent;
                             sw.WriteLine(message);
                         }
                         catch (Exception)
