@@ -66,11 +66,18 @@ namespace ChatR.ChatClient
 
         private void Connect()
         {
-            _client.Connect(this, this);
-            _client.Join(NameBox.Text);
-            InputBox.Focus();
-            ConnectButton.Enabled = false;
-            NameBox.Enabled = false;
+            try
+            {
+                _client.Connect(this, this);
+                _client.Join(NameBox.Text);
+                InputBox.Focus();
+                ConnectButton.Enabled = false;
+                NameBox.Enabled = false;
+            }
+            catch (Exception e)
+            {
+                Messages.Items.Add("[ERROR]: " + e.Message);
+            }
         }
     }
 }

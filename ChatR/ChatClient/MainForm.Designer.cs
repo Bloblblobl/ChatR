@@ -32,9 +32,10 @@
             this.Messages = new System.Windows.Forms.ListBox();
             this.InputBox = new System.Windows.Forms.TextBox();
             this.SplitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.SplitContainer3 = new System.Windows.Forms.SplitContainer();
             this.ConnectButton = new System.Windows.Forms.Button();
-            this.NameBox = new System.Windows.Forms.TextBox();
             this.Users = new System.Windows.Forms.ListBox();
+            this.NameBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer)).BeginInit();
             this.SplitContainer.Panel1.SuspendLayout();
             this.SplitContainer.Panel2.SuspendLayout();
@@ -43,6 +44,10 @@
             this.SplitContainer2.Panel1.SuspendLayout();
             this.SplitContainer2.Panel2.SuspendLayout();
             this.SplitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SplitContainer3)).BeginInit();
+            this.SplitContainer3.Panel1.SuspendLayout();
+            this.SplitContainer3.Panel2.SuspendLayout();
+            this.SplitContainer3.SuspendLayout();
             this.SuspendLayout();
             // 
             // SplitContainer
@@ -91,8 +96,7 @@
             // 
             // SplitContainer2.Panel1
             // 
-            this.SplitContainer2.Panel1.Controls.Add(this.ConnectButton);
-            this.SplitContainer2.Panel1.Controls.Add(this.NameBox);
+            this.SplitContainer2.Panel1.Controls.Add(this.SplitContainer3);
             // 
             // SplitContainer2.Panel2
             // 
@@ -101,26 +105,35 @@
             this.SplitContainer2.SplitterDistance = 25;
             this.SplitContainer2.TabIndex = 0;
             // 
+            // SplitContainer3
+            // 
+            this.SplitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SplitContainer3.Location = new System.Drawing.Point(0, 0);
+            this.SplitContainer3.Name = "SplitContainer3";
+            // 
+            // SplitContainer3.Panel1
+            // 
+            this.SplitContainer3.Panel1.Controls.Add(this.NameBox);
+            // 
+            // SplitContainer3.Panel2
+            // 
+            this.SplitContainer3.Panel2.Controls.Add(this.ConnectButton);
+            this.SplitContainer3.Size = new System.Drawing.Size(204, 25);
+            this.SplitContainer3.SplitterDistance = 85;
+            this.SplitContainer3.TabIndex = 0;
+            // 
             // ConnectButton
             // 
-            this.ConnectButton.Dock = System.Windows.Forms.DockStyle.Right;
+            this.ConnectButton.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.ConnectButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ConnectButton.Enabled = false;
-            this.ConnectButton.Location = new System.Drawing.Point(108, 0);
+            this.ConnectButton.Location = new System.Drawing.Point(0, 1);
             this.ConnectButton.Name = "ConnectButton";
-            this.ConnectButton.Size = new System.Drawing.Size(96, 25);
+            this.ConnectButton.Size = new System.Drawing.Size(114, 25);
             this.ConnectButton.TabIndex = 1;
             this.ConnectButton.Text = "Connect";
             this.ConnectButton.UseVisualStyleBackColor = true;
             this.ConnectButton.Click += new System.EventHandler(this.ConnectButton_Click);
-            // 
-            // NameBox
-            // 
-            this.NameBox.Location = new System.Drawing.Point(3, 2);
-            this.NameBox.Name = "NameBox";
-            this.NameBox.Size = new System.Drawing.Size(99, 20);
-            this.NameBox.TabIndex = 0;
-            this.NameBox.TextChanged += new System.EventHandler(this.NameBox_TextChanged);
-            this.NameBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.NameBox_KeyDown);
             // 
             // Users
             // 
@@ -130,6 +143,16 @@
             this.Users.Name = "Users";
             this.Users.Size = new System.Drawing.Size(204, 573);
             this.Users.TabIndex = 0;
+            // 
+            // NameBox
+            // 
+            this.NameBox.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.NameBox.Location = new System.Drawing.Point(3, 3);
+            this.NameBox.Name = "NameBox";
+            this.NameBox.Size = new System.Drawing.Size(80, 20);
+            this.NameBox.TabIndex = 0;
+            this.NameBox.TextChanged += new System.EventHandler(this.NameBox_TextChanged);
+            this.NameBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.NameBox_KeyDown);
             // 
             // MainForm
             // 
@@ -145,10 +168,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer)).EndInit();
             this.SplitContainer.ResumeLayout(false);
             this.SplitContainer2.Panel1.ResumeLayout(false);
-            this.SplitContainer2.Panel1.PerformLayout();
             this.SplitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer2)).EndInit();
             this.SplitContainer2.ResumeLayout(false);
+            this.SplitContainer3.Panel1.ResumeLayout(false);
+            this.SplitContainer3.Panel1.PerformLayout();
+            this.SplitContainer3.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.SplitContainer3)).EndInit();
+            this.SplitContainer3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -189,8 +216,9 @@
 
         private System.Windows.Forms.SplitContainer SplitContainer2;
         private System.Windows.Forms.Button ConnectButton;
-        private System.Windows.Forms.TextBox NameBox;
         private System.Windows.Forms.ListBox Users;
+        private System.Windows.Forms.SplitContainer SplitContainer3;
+        private System.Windows.Forms.TextBox NameBox;
     }
 }
 
