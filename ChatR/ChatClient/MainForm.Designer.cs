@@ -1,4 +1,5 @@
-﻿namespace ChatR.ChatClient
+﻿using System.Windows.Forms;
+namespace ChatR.ChatClient
 {
     partial class MainForm : IChatREvents
     {
@@ -33,16 +34,14 @@
             this.InputBox = new System.Windows.Forms.TextBox();
             this.SplitContainer2 = new System.Windows.Forms.SplitContainer();
             this.SplitContainer3 = new System.Windows.Forms.SplitContainer();
-            this.ConnectButton = new System.Windows.Forms.Button();
-            this.Users = new System.Windows.Forms.ListBox();
             this.NameBox = new System.Windows.Forms.TextBox();
+            this.ConnectButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer)).BeginInit();
             this.SplitContainer.Panel1.SuspendLayout();
             this.SplitContainer.Panel2.SuspendLayout();
             this.SplitContainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer2)).BeginInit();
             this.SplitContainer2.Panel1.SuspendLayout();
-            this.SplitContainer2.Panel2.SuspendLayout();
             this.SplitContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer3)).BeginInit();
             this.SplitContainer3.Panel1.SuspendLayout();
@@ -97,10 +96,6 @@
             // SplitContainer2.Panel1
             // 
             this.SplitContainer2.Panel1.Controls.Add(this.SplitContainer3);
-            // 
-            // SplitContainer2.Panel2
-            // 
-            this.SplitContainer2.Panel2.Controls.Add(this.Users);
             this.SplitContainer2.Size = new System.Drawing.Size(204, 602);
             this.SplitContainer2.SplitterDistance = 25;
             this.SplitContainer2.TabIndex = 0;
@@ -122,6 +117,16 @@
             this.SplitContainer3.SplitterDistance = 85;
             this.SplitContainer3.TabIndex = 0;
             // 
+            // NameBox
+            // 
+            this.NameBox.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.NameBox.Location = new System.Drawing.Point(3, 3);
+            this.NameBox.Name = "NameBox";
+            this.NameBox.Size = new System.Drawing.Size(80, 20);
+            this.NameBox.TabIndex = 0;
+            this.NameBox.TextChanged += new System.EventHandler(this.NameBox_TextChanged);
+            this.NameBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.NameBox_KeyDown);
+            // 
             // ConnectButton
             // 
             this.ConnectButton.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -134,25 +139,6 @@
             this.ConnectButton.Text = "Connect";
             this.ConnectButton.UseVisualStyleBackColor = true;
             this.ConnectButton.Click += new System.EventHandler(this.ConnectButton_Click);
-            // 
-            // Users
-            // 
-            this.Users.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Users.FormattingEnabled = true;
-            this.Users.Location = new System.Drawing.Point(0, 0);
-            this.Users.Name = "Users";
-            this.Users.Size = new System.Drawing.Size(204, 573);
-            this.Users.TabIndex = 0;
-            // 
-            // NameBox
-            // 
-            this.NameBox.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.NameBox.Location = new System.Drawing.Point(3, 3);
-            this.NameBox.Name = "NameBox";
-            this.NameBox.Size = new System.Drawing.Size(80, 20);
-            this.NameBox.TabIndex = 0;
-            this.NameBox.TextChanged += new System.EventHandler(this.NameBox_TextChanged);
-            this.NameBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.NameBox_KeyDown);
             // 
             // MainForm
             // 
@@ -168,7 +154,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer)).EndInit();
             this.SplitContainer.ResumeLayout(false);
             this.SplitContainer2.Panel1.ResumeLayout(false);
-            this.SplitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer2)).EndInit();
             this.SplitContainer2.ResumeLayout(false);
             this.SplitContainer3.Panel1.ResumeLayout(false);
@@ -182,8 +167,9 @@
 
         #endregion
 
+
+
         private System.Windows.Forms.SplitContainer SplitContainer;
-        private System.Windows.Forms.ListBox Messages;
         private System.Windows.Forms.TextBox InputBox;
 
         public void OnMessage(string name, string message)
@@ -194,13 +180,14 @@
         public void OnJoin(string name)
         {
             Messages.Items.Add(string.Format("User [{0}] has joined the ChatRoom", name));
-            Users.Items.Add(name);
+            _usersListView.Items.Add(new ListViewItem(name, 0));
         }
 
         public void OnLeave(string name)
         {
             Messages.Items.Add(string.Format("User [{0}] has left the ChatRoom", name));
-            Users.Items.Remove(name);
+            var items = _usersListView.Items.Find(name, false);
+            _usersListView.Items.Remove(items[0]);
         }
 
         public void OnList(string[] names)
@@ -209,16 +196,16 @@
             {
                 if (s.Length > 0)
                 {
-                    Users.Items.Add(s);
+                    _usersListView.Items.Add(new ListViewItem(s, 0));
                 }
             }
         }
 
         private System.Windows.Forms.SplitContainer SplitContainer2;
         private System.Windows.Forms.Button ConnectButton;
-        private System.Windows.Forms.ListBox Users;
         private System.Windows.Forms.SplitContainer SplitContainer3;
         private System.Windows.Forms.TextBox NameBox;
+        private System.Windows.Forms.ListBox Messages;
     }
 }
 
