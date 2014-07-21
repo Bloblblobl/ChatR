@@ -1,4 +1,0 @@
-E:\Documents\ChatR\ChatR\Common\bin\Release\Common.dll
-E:\Documents\ChatR\ChatR\Common\bin\Release\Common.pdb
-E:\Documents\ChatR\ChatR\Common\obj\Release\Common.dll
-E:\Documents\ChatR\ChatR\Common\obj\Release\Common.pdb
