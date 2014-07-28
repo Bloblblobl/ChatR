@@ -34,5 +34,42 @@ namespace ChatR.ChatClient.Properties {
                 this["IP"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Nickname {
+            get {
+                return ((string)(this["Nickname"]));
+            }
+            set {
+                this["Nickname"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Default.png")]
+        public string Avatar {
+            get {
+                return ((string)(this["Avatar"]));
+            }
+            set {
+                this["Avatar"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://www.mikoavatar.com/wp-content/uploads/2013/11/tumblr_mh5sf11Igf1qktqjdo1_5" +
+            "00-300x300.jpg")]
+        public string AvatarURL {
+            get {
+                return ((string)(this["AvatarURL"]));
+            }
+            set {
+                this["AvatarURL"] = value;
+            }
+        }
     }
 }

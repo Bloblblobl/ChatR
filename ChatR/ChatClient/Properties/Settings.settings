@@ -5,5 +5,14 @@
     <Setting Name="IP" Type="System.String" Scope="User">
       <Value Profile="(Default)">192.168.1.126</Value>
     </Setting>
+    <Setting Name="Nickname" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Avatar" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Default.png</Value>
+    </Setting>
+    <Setting Name="AvatarURL" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://www.mikoavatar.com/wp-content/uploads/2013/11/tumblr_mh5sf11Igf1qktqjdo1_500-300x300.jpg</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
