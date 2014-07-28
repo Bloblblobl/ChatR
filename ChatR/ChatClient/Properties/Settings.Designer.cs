@@ -49,7 +49,7 @@ namespace ChatR.ChatClient.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Default.png")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Avatar.png")]
         public string Avatar {
             get {
                 return ((string)(this["Avatar"]));
@@ -61,8 +61,7 @@ namespace ChatR.ChatClient.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://www.mikoavatar.com/wp-content/uploads/2013/11/tumblr_mh5sf11Igf1qktqjdo1_5" +
-            "00-300x300.jpg")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://api.imgur.com/3/image/SSfVm9u")]
         public string AvatarURL {
             get {
                 return ((string)(this["AvatarURL"]));

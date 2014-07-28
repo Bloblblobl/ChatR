@@ -12,6 +12,8 @@ namespace ChatR.ChatClient
     using settings = Properties.Settings;
     using System.IO;
     using System.Net;
+    using System.Collections.Specialized;
+    using System.Web.Script.Serialization;
 
     public partial class MainForm : Form
     {
@@ -81,10 +83,16 @@ namespace ChatR.ChatClient
             //}
             // fetch avatar from URL
             var url = settings.Default.AvatarURL;
-            var request = WebRequest.Create(url);
-            var response = request.GetResponse();
-            var responseStream = response.GetResponseStream();
-            return new Bitmap(responseStream);
+            using (var w = new WebClient())
+            {
+                w.Headers.Add("Authorization", ImagePoster.IMGUR_CLIENT_ID);
+                var json = w.DownloadString(url);
+                var jss = new JavaScriptSerializer();
+                dynamic data = jss.DeserializeObject(json);
+                var link = data["data"]["link"];
+                w.DownloadFile(link, settings.Default.Avatar);
+            }
+            return Bitmap.FromFile(settings.Default.Avatar);
         }
 
         private void SplitContainer_SplitterMoved(object sender, SplitterEventArgs e)

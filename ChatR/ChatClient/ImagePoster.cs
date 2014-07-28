@@ -11,7 +11,7 @@ namespace ChatR.ChatClient
 {
     class ImagePoster
     {
-        const string IMGUR_CLIENT_ID = "Client-ID fd159015b8aec94";
+        public const string IMGUR_CLIENT_ID = "Client-ID fd159015b8aec94";
 
         public static string PostToImgur(string imageFilePath)
         {
