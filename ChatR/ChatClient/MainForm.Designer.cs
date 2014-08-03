@@ -30,7 +30,6 @@ namespace ChatR.ChatClient
         private void InitializeComponent()
         {
             this.SplitContainer = new System.Windows.Forms.SplitContainer();
-            this.Messages = new System.Windows.Forms.ListBox();
             this.InputBox = new System.Windows.Forms.TextBox();
             this.SplitContainer2 = new System.Windows.Forms.SplitContainer();
             this.SplitContainer3 = new System.Windows.Forms.SplitContainer();
@@ -57,7 +56,6 @@ namespace ChatR.ChatClient
             // 
             // SplitContainer.Panel1
             // 
-            this.SplitContainer.Panel1.Controls.Add(this.Messages);
             this.SplitContainer.Panel1.Controls.Add(this.InputBox);
             // 
             // SplitContainer.Panel2
@@ -67,15 +65,6 @@ namespace ChatR.ChatClient
             this.SplitContainer.SplitterDistance = 800;
             this.SplitContainer.TabIndex = 0;
             this.SplitContainer.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.SplitContainer_SplitterMoved);
-            // 
-            // Messages
-            // 
-            this.Messages.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Messages.FormattingEnabled = true;
-            this.Messages.Location = new System.Drawing.Point(0, 0);
-            this.Messages.Name = "Messages";
-            this.Messages.Size = new System.Drawing.Size(800, 582);
-            this.Messages.TabIndex = 1;
             // 
             // InputBox
             // 
@@ -174,30 +163,30 @@ namespace ChatR.ChatClient
 
         public void OnMessage(string name, string message)
         {
-            Messages.Items.Add(string.Format("[{0}]: {1}", name, message));
+            _messagesListView.Items.Add(new ListViewItem(string.Format("[{0}]: {1}", name, message)));
         }
 
-        public void OnJoin(string name)
+        public void OnJoin(string name, string url)
         {
-            Messages.Items.Add(string.Format("User [{0}] has joined the ChatRoom", name));
+            _messagesListView.Items.Add(new ListViewItem(string.Format("User [{0}] has joined the ChatRoom", name)));
             _usersListView.Items.Add(new ListViewItem(name, 0));
         }
 
         public void OnLeave(string name)
         {
-            Messages.Items.Add(string.Format("User [{0}] has left the ChatRoom", name));
+            _messagesListView.Items.Add(string.Format("User [{0}] has left the ChatRoom", name));
             var items = _usersListView.Items.Find(name, false);
             _usersListView.Items.Remove(items[0]);
         }
 
-        public void OnList(string[] names)
+        public void OnList(string[] users)
         {
-            foreach (string s in names)
+            foreach (string u in users)
             {
-                if (s.Length > 0)
-                {
-                    _usersListView.Items.Add(new ListViewItem(s, 0));
-                }
+                // get avatar bitmap of user u (saves the file in the avatar folder)
+                // add the bitmap to the imagelist
+                // update the user avatar dictionary with the new user and the image index
+                _usersListView.Items.Add(new ListViewItem(u, 0));
             }
         }
 
@@ -205,7 +194,6 @@ namespace ChatR.ChatClient
         private System.Windows.Forms.Button ConnectButton;
         private System.Windows.Forms.SplitContainer SplitContainer3;
         private System.Windows.Forms.TextBox NameBox;
-        private System.Windows.Forms.ListBox Messages;
     }
 }
 

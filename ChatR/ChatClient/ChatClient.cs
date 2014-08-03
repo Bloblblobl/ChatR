@@ -7,6 +7,7 @@ using System.IO;
 using ChatR.Common;
 using System.Windows.Forms;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace ChatR.ChatClient
 {
@@ -29,7 +30,7 @@ namespace ChatR.ChatClient
             _reader = new StreamReader(stream);
             _writer = new StreamWriter(stream);
             _writer.AutoFlush = true;
-            var thread = new Thread (HandleIncomingMessages);
+            var thread = new Thread (HandleIncoming_messagesListView);
             thread.Start(this);
         }
 
@@ -38,16 +39,25 @@ namespace ChatR.ChatClient
             _writer.WriteLine("MSG  " + message);
         }
 
-        public void Join(string name)
+        public void Join(string name, string URL)
         {
-            _writer.WriteLine("JOIN " + name);
+            _writer.WriteLine("JOIN " + name + " " + URL);
         }
 
 
         private void HandleMessageOnUIThread(object[] parameters)
         {
             var message = (string)parameters[0];
-            var tokens = message.Split(' ');
+            var raw_tokens = message.Split(' ');
+            var tokens = new List<string>();
+            foreach (var t in raw_tokens)
+            {
+                if (t != "")
+                {
+                    tokens.Add(t);
+                }
+            }
+            
             switch (tokens[0])
             {
                 case "MSG":
@@ -58,7 +68,7 @@ namespace ChatR.ChatClient
                 }
                 case "JOIN":
                 {
-                    _eventSink.OnJoin(tokens[1]);
+                    _eventSink.OnJoin(tokens[1], tokens[2]);
                     break;
                 }
                 case "LEAVE":
@@ -79,7 +89,7 @@ namespace ChatR.ChatClient
             _control.Invoke((MethodInvoker)(() => this.HandleMessageOnUIThread(new object[]{message})));
         }
 
-        static void HandleIncomingMessages(object o)
+        static void HandleIncoming_messagesListView(object o)
         {
             var client = (ChatClient)o;
             while (true) 

@@ -8,9 +8,9 @@ MESSAGE <text>
 Server 2 Client
 
 Event             Target        Message       
-Receive JOIN      Everybody     JOIN <nickname>
+Receive JOIN      Everybody     JOIN <nickname> <avatar URL>
 Receive LEAVE     Everybody     LEAVE <nickname>
-Receive LIST      Sender        LIST <nickname 1> <nickname 2> ... <nickname N>
+Receive LIST      Sender        LIST <nickname 1> <URL 1> <nickname 2> <URL 2> ... <nickname N> <URL N>
 Receive MSG       Everybody     MESSAGE <nickname> <text>
 Client disconnect Everybody     LEAVE <nickname>            
 
@@ -18,5 +18,5 @@ Client disconnect Everybody     LEAVE <nickname>
 TODO:
 
 - Add nick name to client state on server (dictionary of socket -> (nick, stream) )
-- parse incoming messages (command is anything up to the first space)
+- parse incoming _messagesListView (command is anything up to the first space)
 - handle each command

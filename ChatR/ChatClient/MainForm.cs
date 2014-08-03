@@ -19,11 +19,23 @@ namespace ChatR.ChatClient
     {
         ChatClient _client = null;
         ListView _usersListView = null;
+        ListView _messagesListView = null;
+        ImageList _avatars = null;
+        Dictionary<string, int> _userAvatars = null;
 
         public MainForm()
         {
             InitializeComponent();
-            CreateUsersListView();
+
+            _avatars = new ImageList();
+            _userAvatars = new Dictionary<string, int>();
+
+            _usersListView = CreateListView();
+            this.SplitContainer2.Panel2.Controls.Add(_usersListView);
+
+            _messagesListView = CreateListView();
+            this.SplitContainer.Panel1.Controls.Add(_messagesListView);
+
             _client = new ChatClient();
 
             var nickname = Properties.Settings.Default.Nickname;
@@ -35,54 +47,67 @@ namespace ChatR.ChatClient
 
         }
 
-        private void CreateUsersListView()
+        public static string CreateRandomName(int length)
+        {
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var stringChars = new char[length];
+            var random = new Random();
+
+            for (int i = 0; i < stringChars.Length; i++)
+            {
+                stringChars[i] = chars[random.Next(chars.Length)];
+            }
+
+            return new string(stringChars);
+        }
+
+        private ListView CreateListView()
         {
             // Create a new ListView control.
-            _usersListView = new ListView();
-            _usersListView.Bounds = new Rectangle(new Point(10, 10), new Size(300, 200));
-            _usersListView.Dock = DockStyle.Fill;
+            var listView = new ListView();
+            listView.Dock = DockStyle.Fill;
 
             // Set the view to show details.
-            _usersListView.View = View.List;
+            listView.View = View.List;
             // Allow the user to edit item text.
-            _usersListView.LabelEdit = false;
+            listView.LabelEdit = false;
             // Allow the user to rearrange columns.
-            _usersListView.AllowColumnReorder = true;
+            listView.AllowColumnReorder = true;
             // Display check boxes.
-            _usersListView.CheckBoxes = false;
+            listView.CheckBoxes = false;
             // Select the item and subitems when selection is made.
-            _usersListView.FullRowSelect = true;
+            listView.FullRowSelect = true;
             // Display grid lines.
-            _usersListView.GridLines = false;
+            listView.GridLines = false;
             // Sort the items in the list in ascending order.
-            _usersListView.Sorting = SortOrder.Ascending;
+            listView.Sorting = SortOrder.Ascending;
 
             // Create columns for the items
             // Width of -2 indicates auto-size.
-            _usersListView.Columns.Add("Users", -2, HorizontalAlignment.Left);
+            listView.Columns.Add("The Column", -2, HorizontalAlignment.Left);
 
             // Create two ImageList objects.
-            ImageList imageListLarge = new ImageList();
+            ImageList imageList = new ImageList();
 
             // Initialize the ImageList objects with bitmaps.
-            imageListLarge.Images.Add(GetAvatarBitmap());
+            imageList.Images.Add(GetAvatarBitmap("j"));
 
             //Assign the ImageList objects to the ListView.
-            _usersListView.SmallImageList = imageListLarge;
+            listView.SmallImageList = imageList;
 
             // Add the ListView to the control collection. 
-            this.SplitContainer2.Panel2.Controls.Add(_usersListView);
+            return listView;
         }
 
-        private static Image GetAvatarBitmap()
+        private static Image GetAvatarBitmap(string url)
         {
             var filePath = @"Avatars/" + Properties.Settings.Default.Avatar;
-            //if (File.Exists(filePath))
-            //{
-            //    return Bitmap.FromFile(filePath);
-            //}
+            if (File.Exists(filePath))
+            {
+                return Bitmap.FromFile(filePath);
+            }
+
             // fetch avatar from URL
-            var url = settings.Default.AvatarURL;
             using (var w = new WebClient())
             {
                 w.Headers.Add("Authorization", ImagePoster.IMGUR_CLIENT_ID);
@@ -90,7 +115,8 @@ namespace ChatR.ChatClient
                 var jss = new JavaScriptSerializer();
                 dynamic data = jss.DeserializeObject(json);
                 var link = data["data"]["link"];
-                w.DownloadFile(link, settings.Default.Avatar);
+                var filename = CreateRandomName(5) + ".png";
+                w.DownloadFile(link, filename);
             }
             return Bitmap.FromFile(settings.Default.Avatar);
         }
@@ -148,7 +174,7 @@ namespace ChatR.ChatClient
                 }
                 var url = ImagePoster.PostToImgur("Avatars/" + settings.Default.Avatar);
                 _client.Connect(this, this);
-                _client.Join(NameBox.Text);
+                _client.Join(NameBox.Text, url);
                 ConnectButton.Enabled = false;
                 NameBox.Enabled = false;
                 InputBox.Enabled = true;
@@ -156,8 +182,13 @@ namespace ChatR.ChatClient
             }
             catch (Exception e)
             {
-                Messages.Items.Add("[ERROR]: " + e.Message);
+                _messagesListView.Items.Add("[ERROR]: " + e.Message);
             }
+        }
+
+        private void _messagesListView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

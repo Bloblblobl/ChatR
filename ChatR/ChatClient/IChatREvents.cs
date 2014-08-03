@@ -8,8 +8,8 @@ namespace ChatR.ChatClient
     interface IChatREvents
     {
         void OnMessage(string name, string message);
-        void OnJoin(string name);
+        void OnJoin(string name, string url);
         void OnLeave(string name);
-        void OnList(string[] names);
+        void OnList(string[] users);
     }
 }

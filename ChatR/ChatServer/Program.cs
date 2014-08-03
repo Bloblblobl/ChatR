@@ -44,7 +44,6 @@ namespace ChatR.ChatServer
             }
         }
 
-
         static void HandleClient(object o)
         {
             var tuple = (Tuple<StreamReader, MessageHandler, Socket>)o;
