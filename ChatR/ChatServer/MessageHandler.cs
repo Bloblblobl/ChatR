@@ -30,7 +30,7 @@ namespace ChatR.ChatServer
                 if (command == "JOIN ")
                 {
                     // Set nickname of sender to specified nickname
-                    var contents = content.Split(' ');
+                    var contents = content.Split(',');
                     client.Name = contents[0];
                     client.URL = contents[1];
                     var users = new List<string>();
@@ -38,13 +38,12 @@ namespace ChatR.ChatServer
                     foreach (KeyValuePair<Socket, Client> c in _clients)
                     {
                         var sw = c.Value.StreamWriter;
-                        sw.WriteLine("JOIN " + client.Name + " " + client.URL);
+                        sw.WriteLine("JOIN " + client.Name + "," + client.URL);
                         if (c.Value.Name == _clients[sender].Name)
                         {
                             continue;
                         }
-                        users.Add(c.Value.Name);
-                        users.Add(c.Value.URL);
+                        users.Add(c.Value.Name + "," + c.Value.URL);
                     }
 
                     var splitter = "";

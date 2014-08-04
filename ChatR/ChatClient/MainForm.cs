@@ -21,14 +21,15 @@ namespace ChatR.ChatClient
         ListView _usersListView = null;
         ListView _messagesListView = null;
         ImageList _avatars = null;
-        Dictionary<string, int> _userAvatars = null;
+        ToolTip _nameToolTip = new ToolTip();
 
         public MainForm()
         {
             InitializeComponent();
 
+            // Set up the ToolTip
+
             _avatars = new ImageList();
-            _userAvatars = new Dictionary<string, int>();
 
             _usersListView = CreateListView();
             this.SplitContainer2.Panel2.Controls.Add(_usersListView);
@@ -80,26 +81,20 @@ namespace ChatR.ChatClient
             // Display grid lines.
             listView.GridLines = false;
             // Sort the items in the list in ascending order.
-            listView.Sorting = SortOrder.Ascending;
+            //listView.Sorting = SortOrder.None;
 
             // Create columns for the items
             // Width of -2 indicates auto-size.
             listView.Columns.Add("The Column", -2, HorizontalAlignment.Left);
 
-            // Create two ImageList objects.
-            ImageList imageList = new ImageList();
-
-            // Initialize the ImageList objects with bitmaps.
-            imageList.Images.Add(GetAvatarBitmap("j"));
-
             //Assign the ImageList objects to the ListView.
-            listView.SmallImageList = imageList;
+            listView.SmallImageList = _avatars;
 
             // Add the ListView to the control collection. 
             return listView;
         }
 
-        private static Image GetAvatarBitmap(string url)
+        private static Image GetAvatarImage(string url)
         {
             var filePath = @"Avatars/" + Properties.Settings.Default.Avatar;
             if (File.Exists(filePath))
@@ -119,6 +114,11 @@ namespace ChatR.ChatClient
                 w.DownloadFile(link, filename);
             }
             return Bitmap.FromFile(settings.Default.Avatar);
+        }
+
+        private void Form1_Load(object sender, System.EventArgs e)
+        {
+            
         }
 
         private void SplitContainer_SplitterMoved(object sender, SplitterEventArgs e)
@@ -153,6 +153,12 @@ namespace ChatR.ChatClient
 
         private void NameBox_KeyDown(object sender, KeyEventArgs e)
         {
+            if ((e.KeyCode == Keys.Oemcomma) || (e.KeyCode == Keys.Space))
+            {
+                e.SuppressKeyPress = true;
+                _nameToolTip.Show("Space and Comma are forbidden", NameBox, 1000);
+                return;
+            }
             if ((e.KeyCode == Keys.Enter) || (e.KeyCode == Keys.Tab))
             {
                 e.Handled = e.SuppressKeyPress = true;

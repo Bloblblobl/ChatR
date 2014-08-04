@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms;
+using System.Drawing;
 namespace ChatR.ChatClient
 {
     partial class MainForm : IChatREvents
@@ -163,13 +164,32 @@ namespace ChatR.ChatClient
 
         public void OnMessage(string name, string message)
         {
-            _messagesListView.Items.Add(new ListViewItem(string.Format("[{0}]: {1}", name, message)));
+            _messagesListView.Items.Add(new ListViewItem(string.Format("[{0}]: {1}", name, message), name));
         }
 
-        public void OnJoin(string name, string url)
+        public void OnJoin(string user)
         {
-            _messagesListView.Items.Add(new ListViewItem(string.Format("User [{0}] has joined the ChatRoom", name)));
-            _usersListView.Items.Add(new ListViewItem(name, 0));
+            AddUserToUsersList(user);
+
+            var name = user.Split(',')[0];
+            var item = new ListViewItem(string.Format("User [{0}] has joined the ChatRoom", name), name);
+            item.ForeColor = Color.Green;
+            _messagesListView.Items.Add(item);
+        }
+
+        private void AddUserToUsersList(string user)
+        {
+            var tokens = user.Split(',');
+            var name = tokens[0];
+            var url = tokens[1];
+
+            var image = GetAvatarImage(url);
+
+            // add the image indexed by username to the imagelist
+            _avatars.Images.Add(name, image);
+
+            // add the new user to the users list
+            _usersListView.Items.Add(new ListViewItem(name, name));
         }
 
         public void OnLeave(string name)
@@ -183,10 +203,7 @@ namespace ChatR.ChatClient
         {
             foreach (string u in users)
             {
-                // get avatar bitmap of user u (saves the file in the avatar folder)
-                // add the bitmap to the imagelist
-                // update the user avatar dictionary with the new user and the image index
-                _usersListView.Items.Add(new ListViewItem(u, 0));
+                AddUserToUsersList(u);
             }
         }
 

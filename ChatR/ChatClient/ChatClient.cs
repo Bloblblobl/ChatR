@@ -41,7 +41,7 @@ namespace ChatR.ChatClient
 
         public void Join(string name, string URL)
         {
-            _writer.WriteLine("JOIN " + name + " " + URL);
+            _writer.WriteLine("JOIN " + name + "," + URL);
         }
 
 
@@ -68,7 +68,7 @@ namespace ChatR.ChatClient
                 }
                 case "JOIN":
                 {
-                    _eventSink.OnJoin(tokens[1], tokens[2]);
+                    _eventSink.OnJoin(tokens[1]);
                     break;
                 }
                 case "LEAVE":

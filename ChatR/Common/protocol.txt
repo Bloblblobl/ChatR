@@ -8,9 +8,9 @@ MESSAGE <text>
 Server 2 Client
 
 Event             Target        Message       
-Receive JOIN      Everybody     JOIN <nickname> <avatar URL>
+Receive JOIN      Everybody     JOIN <nickname>,<avatar URL>
 Receive LEAVE     Everybody     LEAVE <nickname>
-Receive LIST      Sender        LIST <nickname 1> <URL 1> <nickname 2> <URL 2> ... <nickname N> <URL N>
+Receive LIST      Sender        LIST <nickname 1>,<URL 1> <nickname 2>,<URL 2> ... <nickname N>,<URL N>
 Receive MSG       Everybody     MESSAGE <nickname> <text>
 Client disconnect Everybody     LEAVE <nickname>            
 
