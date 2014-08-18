@@ -45,7 +45,7 @@ local.properties
 # Build results
 
 [Dd]ebug/
-[Rr]elease/
+[Rr]elease./
 x64/
 build/
 [Bb]in/
@@ -215,3 +215,5 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 
+Releases/ChatR Alpha 2014.08.03.zip
+Releases/ChatR Server Alpha 2014.08.03.zip
