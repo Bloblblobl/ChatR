@@ -36,7 +36,7 @@ namespace ChatR.ChatClient
 
         public void Send(string message)
         {
-            _writer.WriteLine("MSG  " + message);
+            _writer.WriteLine("MSG " + message);
         }
 
         public void Join(string name, string URL)

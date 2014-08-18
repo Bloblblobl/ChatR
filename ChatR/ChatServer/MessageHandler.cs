@@ -22,12 +22,13 @@ namespace ChatR.ChatServer
         {
             lock (_lock)
             {
-                var command = message.Substring(0, 5);
-                var content = message.Substring(5);
+                var tokens = message.Split(' ');
+                var command = tokens[0];
+                var content = string.Join(" ", tokens.Skip(1).ToArray());
 
                 var client = _clients[sender];
 
-                if (command == "JOIN ")
+                if (command == "JOIN")
                 {
                     // Set nickname of sender to specified nickname
                     var contents = content.Split(',');
@@ -69,7 +70,7 @@ namespace ChatR.ChatServer
                     }
                 }
 
-                if (command == "MSG  ")
+                if (command == "MSG")
                 {
                     var toRemove = new List<Socket>();
 
@@ -78,9 +79,9 @@ namespace ChatR.ChatServer
                         try
                         {
                             var sw = c.Value.StreamWriter;
-                            var msgContent = message.Substring(5);
-                            message = "MSG " + _clients[sender].Name + " " + msgContent;
-                            sw.WriteLine(message);
+                            var msgContent = string.Join(" ", message.Split(' ').Skip(1).ToArray());
+                            var sentMessage = "MSG " + _clients[sender].Name + " " + msgContent;
+                            sw.WriteLine(sentMessage);
                         }
                         catch (Exception)
                         {
