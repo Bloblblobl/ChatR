@@ -56,11 +56,12 @@ namespace ChatR.ChatServer
                 try
                 {
                     var message = Shared.ReadLine(reader);
-                    msgHandler.OnMessage (socket, message);
+                   msgHandler.OnMessage (socket, message);
                 }
                 catch (Exception e) 
                 {
                     msgHandler.RemoveClient (socket);
+
                     return;
                 }
 

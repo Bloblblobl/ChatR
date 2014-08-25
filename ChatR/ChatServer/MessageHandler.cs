@@ -39,11 +39,12 @@ namespace ChatR.ChatServer
                     foreach (KeyValuePair<Socket, Client> c in _clients)
                     {
                         var sw = c.Value.StreamWriter;
-                        sw.WriteLine("JOIN " + client.Name + "," + client.URL);
+                        Send("JOIN " + client.Name + "," + client.URL, c.Value);
                         if (c.Value.Name == _clients[sender].Name)
                         {
                             continue;
                         }
+                        
                         users.Add(c.Value.Name + "," + c.Value.URL);
                     }
 
@@ -56,7 +57,7 @@ namespace ChatR.ChatServer
 
                     var text = "LIST " + string.Join(splitter, users);
 
-                    client.StreamWriter.WriteLine(text);
+                    Send(text, client);
                 }
 
                 if (command == "LEAVE")
@@ -66,7 +67,7 @@ namespace ChatR.ChatServer
                     foreach (KeyValuePair<Socket, Client> c in _clients)
                     {
                         var sw = c.Value.StreamWriter;
-                        sw.WriteLine("LEAVE " + client.Name);
+                        Send("LEAVE " + client.Name, c.Value);
                     }
                 }
 
@@ -81,7 +82,7 @@ namespace ChatR.ChatServer
                             var sw = c.Value.StreamWriter;
                             var msgContent = string.Join(" ", message.Split(' ').Skip(1).ToArray());
                             var sentMessage = "MSG " + _clients[sender].Name + " " + msgContent;
-                            sw.WriteLine(sentMessage);
+                            Send(sentMessage, c.Value);
                         }
                         catch (Exception)
                         {
@@ -103,9 +104,44 @@ namespace ChatR.ChatServer
             _clients[s] = new Client(w, s);
         }
 
+        public void Send(string message, Client c)
+        {
+            try
+            {
+                var sw = c.StreamWriter;
+                sw.WriteLine(message);
+            }
+            catch (Exception e)
+            {
+                RemoveClient(c.Socket);
+            }
+        }
+
         public void RemoveClient(Socket s)
         {
+            var exClient = _clients[s];
             _clients.Remove(s);
+
+            var disconnectedClients = new List<Socket>();
+
+            foreach (KeyValuePair<Socket, Client> c in _clients)
+            {
+                try
+                {
+                    var sw = c.Value.StreamWriter;
+                    sw.WriteLine("LEAVE " + exClient.Name);
+                }
+                catch (Exception e)
+                {
+                    // If a client disconnects in the middle, remove it as well
+                    disconnectedClients.Add(c.Key);
+                }
+            }
+
+            foreach (var soc in disconnectedClients)
+            {
+                RemoveClient(soc);
+            }
         }
     }
 }

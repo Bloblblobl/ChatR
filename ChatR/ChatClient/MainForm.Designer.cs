@@ -1,5 +1,6 @@
 ﻿using System.Windows.Forms;
 using System.Drawing;
+using System.Diagnostics;
 namespace ChatR.ChatClient
 {
     partial class MainForm : IChatREvents
@@ -188,15 +189,14 @@ namespace ChatR.ChatClient
             // add the image indexed by username to the imagelist
             _avatars.Images.Add(name, image);
 
-            // add the new user to the users list
-            _usersListView.Items.Add(new ListViewItem(name, name));
+            // add the new user to the users list [Key, String, ImageKey]
+            _usersListView.Items.Add(name, name, name);
         }
 
         public void OnLeave(string name)
         {
             _messagesListView.Items.Add(string.Format("User [{0}] has left the ChatRoom", name));
-            var items = _usersListView.Items.Find(name, false);
-            _usersListView.Items.Remove(items[0]);
+            _usersListView.Items.RemoveByKey(name);
         }
 
         public void OnList(string[] users)
