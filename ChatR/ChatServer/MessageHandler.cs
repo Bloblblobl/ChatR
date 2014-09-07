@@ -9,7 +9,12 @@ namespace ChatR.ChatServer
 {
     class MessageHandler
     {
-        Dictionary<Socket, Client> _clients = null;
+        private Dictionary<Socket, Client> _clients = null;
+
+        public Dictionary<Socket, Client> Clients
+        {
+            get { return _clients; }
+        }
 
         private object _lock = new object();
 
@@ -101,7 +106,10 @@ namespace ChatR.ChatServer
 
         public void AddClient(StreamWriter w, Socket s)
         {
-            _clients[s] = new Client(w, s);
+            lock (_lock)
+            {
+                _clients[s] = new Client(w, s);
+            }
         }
 
         public void Send(string message, Client c)
@@ -119,28 +127,36 @@ namespace ChatR.ChatServer
 
         public void RemoveClient(Socket s)
         {
-            var exClient = _clients[s];
-            _clients.Remove(s);
-
-            var disconnectedClients = new List<Socket>();
-
-            foreach (KeyValuePair<Socket, Client> c in _clients)
+            lock (_lock)
             {
-                try
+                if (!_clients.ContainsKey(s))
                 {
-                    var sw = c.Value.StreamWriter;
-                    sw.WriteLine("LEAVE " + exClient.Name);
+                    return;
                 }
-                catch (Exception e)
-                {
-                    // If a client disconnects in the middle, remove it as well
-                    disconnectedClients.Add(c.Key);
-                }
-            }
 
-            foreach (var soc in disconnectedClients)
-            {
-                RemoveClient(soc);
+                var exClient = _clients[s];
+                _clients.Remove(s);
+
+                var disconnectedClients = new List<Socket>();
+
+                foreach (KeyValuePair<Socket, Client> c in _clients)
+                {
+                    try
+                    {
+                        var sw = c.Value.StreamWriter;
+                        sw.WriteLine("LEAVE " + exClient.Name);
+                    }
+                    catch (Exception e)
+                    {
+                        // If a client disconnects in the middle, remove it as well
+                        disconnectedClients.Add(c.Key);
+                    }
+                }
+
+                foreach (var soc in disconnectedClients)
+                {
+                    RemoveClient(soc);
+                }
             }
         }
     }
