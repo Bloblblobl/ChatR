@@ -165,7 +165,8 @@ namespace ChatR.ChatClient
 
         public void OnMessage(string name, string message)
         {
-            _messagesListView.Items.Add(new ListViewItem(string.Format("[{0}]: {1}", name, message), name));
+            var item = new ListViewItem(string.Format("[{0}]: {1}", name, message), name);
+            _messagesListView.Items.Add(item);
         }
 
         public void OnJoin(string user)
@@ -175,6 +176,7 @@ namespace ChatR.ChatClient
             var name = user.Split(',')[0];
             var item = new ListViewItem(string.Format("User [{0}] has joined the ChatRoom", name), name);
             item.ForeColor = Color.Green;
+            item.BackColor = Color.Salmon;
             _messagesListView.Items.Add(item);
         }
 

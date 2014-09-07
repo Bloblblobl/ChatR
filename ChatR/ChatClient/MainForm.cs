@@ -36,6 +36,7 @@ namespace ChatR.ChatClient
 
             _messagesListView = CreateListView("Messages");
             this.SplitContainer.Panel1.Controls.Add(_messagesListView);
+            _messagesListView.Resize += new System.EventHandler(this._messagesListView_Resize);
 
             _client = new ChatClient();
 
@@ -191,9 +192,19 @@ namespace ChatR.ChatClient
             }
         }
 
+        private void _messagesListView_Resize(object sender, EventArgs e)
+        {
+            SizeLastColumn((ListView)sender);
+        }
+
         private void _messagesListView_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void SizeLastColumn(ListView lv)
+        {
+            lv.Columns[lv.Columns.Count - 1].Width = -2;
         }
     }
 }
