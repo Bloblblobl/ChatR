@@ -31,10 +31,10 @@ namespace ChatR.ChatClient
 
             _avatars = new ImageList();
 
-            _usersListView = CreateListView();
+            _usersListView = CreateListView("Users");
             this.SplitContainer2.Panel2.Controls.Add(_usersListView);
 
-            _messagesListView = CreateListView();
+            _messagesListView = CreateListView("Messages");
             this.SplitContainer.Panel1.Controls.Add(_messagesListView);
 
             _client = new ChatClient();
@@ -62,14 +62,14 @@ namespace ChatR.ChatClient
             return new string(stringChars);
         }
 
-        private ListView CreateListView()
+        private ListView CreateListView(string title)
         {
             // Create a new ListView control.
             var listView = new ListView();
             listView.Dock = DockStyle.Fill;
 
             // Set the view to show details.
-            listView.View = View.List;
+            listView.View = View.Details;
             // Allow the user to edit item text.
             listView.LabelEdit = false;
             // Allow the user to rearrange columns.
@@ -83,9 +83,8 @@ namespace ChatR.ChatClient
             // Sort the items in the list in ascending order.
             //listView.Sorting = SortOrder.None;
 
-            // Create columns for the items
             // Width of -2 indicates auto-size.
-            listView.Columns.Add("The Column", -2, HorizontalAlignment.Left);
+            listView.Columns.Add(title, -2, HorizontalAlignment.Left);
 
             //Assign the ImageList objects to the ListView.
             listView.SmallImageList = _avatars;

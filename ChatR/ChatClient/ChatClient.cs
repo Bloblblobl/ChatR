@@ -81,6 +81,11 @@ namespace ChatR.ChatClient
                     _eventSink.OnList(tokens.Skip(1).ToArray());
                     break;
                 }
+                case "PING":
+                {
+                    _writer.WriteLine("PONG");
+                    break;
+                }
             }
         }
 

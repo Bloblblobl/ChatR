@@ -211,6 +211,9 @@ namespace ChatR.ChatClient
         private System.Windows.Forms.Button ConnectButton;
         private System.Windows.Forms.SplitContainer SplitContainer3;
         private System.Windows.Forms.TextBox NameBox;
+
+
+       
     }
 }
 
