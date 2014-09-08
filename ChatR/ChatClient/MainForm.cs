@@ -90,6 +90,8 @@ namespace ChatR.ChatClient
             //Assign the ImageList objects to the ListView.
             listView.SmallImageList = _avatars;
 
+            listView.Items.Add(new ListViewItem());
+
             // Add the ListView to the control collection. 
             return listView;
         }
@@ -188,7 +190,7 @@ namespace ChatR.ChatClient
             }
             catch (Exception e)
             {
-                _messagesListView.Items.Add("[ERROR]: " + e.Message);
+                _messagesListView.Items.Append("[ERROR]: " + e.Message);
             }
         }
 

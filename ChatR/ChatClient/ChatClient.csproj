@@ -79,6 +79,7 @@
     <Compile Include="ChatClient.cs" />
     <Compile Include="IChatREvents.cs" />
     <Compile Include="ImagePoster.cs" />
+    <Compile Include="ListViewHelpers.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

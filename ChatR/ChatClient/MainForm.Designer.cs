@@ -166,7 +166,7 @@ namespace ChatR.ChatClient
         public void OnMessage(string name, string message)
         {
             var item = new ListViewItem(string.Format("[{0}]: {1}", name, message), name);
-            _messagesListView.Items.Add(item);
+            _messagesListView.Items.Append(item);
         }
 
         public void OnJoin(string user)
@@ -176,8 +176,7 @@ namespace ChatR.ChatClient
             var name = user.Split(',')[0];
             var item = new ListViewItem(string.Format("User [{0}] has joined the ChatRoom", name), name);
             item.ForeColor = Color.Green;
-            item.BackColor = Color.Salmon;
-            _messagesListView.Items.Add(item);
+            _messagesListView.Items.Append(item);
         }
 
         private void AddUserToUsersList(string user)
@@ -192,12 +191,12 @@ namespace ChatR.ChatClient
             _avatars.Images.Add(name, image);
 
             // add the new user to the users list [Key, String, ImageKey]
-            _usersListView.Items.Add(name, name, name);
+            _usersListView.Items.Append(name, name, name);
         }
 
         public void OnLeave(string name)
         {
-            _messagesListView.Items.Add(string.Format("User [{0}] has left the ChatRoom", name));
+            _messagesListView.Items.Append(string.Format("User [{0}] has left the ChatRoom", name));
             _usersListView.Items.RemoveByKey(name);
         }
 
