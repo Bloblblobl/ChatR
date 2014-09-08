@@ -63,22 +63,28 @@ namespace ChatR.ChatServer
                     var text = "LIST " + string.Join(splitter, users);
 
                     Send(text, client);
+                    Console.WriteLine("[{0}]: {1}", client.Name, text);
                 }
 
                 if (command == "LEAVE")
                 {
                     _clients.Remove(sender);
+                    var output = "[ERROR] No Output";
 
                     foreach (KeyValuePair<Socket, Client> c in _clients)
                     {
                         var sw = c.Value.StreamWriter;
-                        Send("LEAVE " + client.Name, c.Value);
+                        output = "LEAVE " + client.Name;
+                        Send(output, c.Value);
                     }
+
+                    Console.WriteLine(output);
                 }
 
                 if (command == "MSG")
                 {
                     var toRemove = new List<Socket>();
+                    var sentMessage = "[ERROR] No Output";
 
                     foreach (var c in _clients)
                     {
@@ -86,7 +92,7 @@ namespace ChatR.ChatServer
                         {
                             var sw = c.Value.StreamWriter;
                             var msgContent = string.Join(" ", message.Split(' ').Skip(1).ToArray());
-                            var sentMessage = "MSG " + _clients[sender].Name + " " + msgContent;
+                            sentMessage = "MSG " + _clients[sender].Name + " " + msgContent;
                             Send(sentMessage, c.Value);
                         }
                         catch (Exception)
@@ -94,6 +100,7 @@ namespace ChatR.ChatServer
                             toRemove.Add(c.Key);
                         }
                     }
+                    Console.WriteLine(sentMessage);
                     foreach (var s in toRemove)
                     {
                         RemoveClient(s);
@@ -144,7 +151,9 @@ namespace ChatR.ChatServer
                     try
                     {
                         var sw = c.Value.StreamWriter;
-                        sw.WriteLine("LEAVE " + exClient.Name);
+                        var output = "LEAVE " + exClient.Name;
+                        sw.WriteLine(output);
+                        Console.WriteLine(output);
                     }
                     catch (Exception e)
                     {
