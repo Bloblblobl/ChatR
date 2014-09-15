@@ -42,11 +42,20 @@ namespace ChatR.ChatClient
 
             var nickname = Properties.Settings.Default.Nickname;
 
+            UpdateSelectorButtonImage();
+
             InputBox.Enabled = false;
             NameBox.Enabled = true;
             NameBox.Text = nickname;
             NameBox.Focus();
 
+        }
+
+        private void UpdateSelectorButtonImage()
+        {
+            var image = GetAvatarImage(Properties.Settings.Default.AvatarURL);
+            var avatar = image.GetThumbnailImage(AvatarButton.Width - 5, AvatarButton.Height - 5, null, IntPtr.Zero);
+            AvatarButton.Image = avatar;
         }
 
         public static string CreateRandomName(int length)
@@ -118,6 +127,23 @@ namespace ChatR.ChatClient
             return Bitmap.FromFile(settings.Default.Avatar);
         }
 
+        public static void UpdateAvatarImage(string url)
+        {
+            var filePath = @"Avatars/" + Properties.Settings.Default.Avatar;
+
+            // fetch avatar from URL
+            using (var w = new WebClient())
+            {
+                w.Headers.Add("Authorization", ImagePoster.IMGUR_CLIENT_ID);
+                var json = w.DownloadString(url);
+                var jss = new JavaScriptSerializer();
+                dynamic data = jss.DeserializeObject(json);
+                var link = data["data"]["link"];
+                w.Headers.Remove("Authorization");
+                w.DownloadFile(link, filePath);
+            }
+        }
+
         private void Form1_Load(object sender, System.EventArgs e)
         {
             
@@ -180,7 +206,7 @@ namespace ChatR.ChatClient
                     settings.Default.Nickname = NameBox.Text;
                     settings.Default.Save();
                 }
-                var url = ImagePoster.PostToImgur("Avatars/" + settings.Default.Avatar);
+                var url = settings.Default.AvatarURL;
                 _client.Connect(this, this);
                 _client.Join(NameBox.Text, url);
                 ConnectButton.Enabled = false;
@@ -207,6 +233,17 @@ namespace ChatR.ChatClient
         private void SizeLastColumn(ListView lv)
         {
             lv.Columns[lv.Columns.Count - 1].Width = -2;
+        }
+
+        private void AvatarButton_Click(object sender, EventArgs e)
+        {
+            var dialog = new AvatarSelector();
+            var result = dialog.ShowDialog();
+            if (result != DialogResult.OK)
+            {
+                return;
+            }
+            UpdateSelectorButtonImage();
         }
     }
 }

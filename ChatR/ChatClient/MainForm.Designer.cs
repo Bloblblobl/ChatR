@@ -34,7 +34,7 @@ namespace ChatR.ChatClient
             this.SplitContainer = new System.Windows.Forms.SplitContainer();
             this.InputBox = new System.Windows.Forms.TextBox();
             this.SplitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.SplitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.AvatarButton = new System.Windows.Forms.Button();
             this.NameBox = new System.Windows.Forms.TextBox();
             this.ConnectButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer)).BeginInit();
@@ -44,10 +44,6 @@ namespace ChatR.ChatClient
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer2)).BeginInit();
             this.SplitContainer2.Panel1.SuspendLayout();
             this.SplitContainer2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.SplitContainer3)).BeginInit();
-            this.SplitContainer3.Panel1.SuspendLayout();
-            this.SplitContainer3.Panel2.SuspendLayout();
-            this.SplitContainer3.SuspendLayout();
             this.SuspendLayout();
             // 
             // SplitContainer
@@ -86,34 +82,28 @@ namespace ChatR.ChatClient
             // 
             // SplitContainer2.Panel1
             // 
-            this.SplitContainer2.Panel1.Controls.Add(this.SplitContainer3);
+            this.SplitContainer2.Panel1.Controls.Add(this.AvatarButton);
+            this.SplitContainer2.Panel1.Controls.Add(this.ConnectButton);
+            this.SplitContainer2.Panel1.Controls.Add(this.NameBox);
             this.SplitContainer2.Size = new System.Drawing.Size(204, 602);
             this.SplitContainer2.SplitterDistance = 25;
             this.SplitContainer2.TabIndex = 0;
             // 
-            // SplitContainer3
+            // AvatarButton
             // 
-            this.SplitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SplitContainer3.Location = new System.Drawing.Point(0, 0);
-            this.SplitContainer3.Name = "SplitContainer3";
-            // 
-            // SplitContainer3.Panel1
-            // 
-            this.SplitContainer3.Panel1.Controls.Add(this.NameBox);
-            // 
-            // SplitContainer3.Panel2
-            // 
-            this.SplitContainer3.Panel2.Controls.Add(this.ConnectButton);
-            this.SplitContainer3.Size = new System.Drawing.Size(204, 25);
-            this.SplitContainer3.SplitterDistance = 85;
-            this.SplitContainer3.TabIndex = 0;
+            this.AvatarButton.Location = new System.Drawing.Point(4, 0);
+            this.AvatarButton.Name = "AvatarButton";
+            this.AvatarButton.Size = new System.Drawing.Size(24, 24);
+            this.AvatarButton.TabIndex = 1;
+            this.AvatarButton.UseVisualStyleBackColor = true;
+            this.AvatarButton.Click += new System.EventHandler(this.AvatarButton_Click);
             // 
             // NameBox
             // 
             this.NameBox.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.NameBox.Location = new System.Drawing.Point(3, 3);
+            this.NameBox.Location = new System.Drawing.Point(34, 2);
             this.NameBox.Name = "NameBox";
-            this.NameBox.Size = new System.Drawing.Size(80, 20);
+            this.NameBox.Size = new System.Drawing.Size(92, 20);
             this.NameBox.TabIndex = 0;
             this.NameBox.TextChanged += new System.EventHandler(this.NameBox_TextChanged);
             this.NameBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.NameBox_KeyDown);
@@ -123,9 +113,9 @@ namespace ChatR.ChatClient
             this.ConnectButton.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.ConnectButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ConnectButton.Enabled = false;
-            this.ConnectButton.Location = new System.Drawing.Point(0, 1);
+            this.ConnectButton.Location = new System.Drawing.Point(132, 0);
             this.ConnectButton.Name = "ConnectButton";
-            this.ConnectButton.Size = new System.Drawing.Size(114, 25);
+            this.ConnectButton.Size = new System.Drawing.Size(69, 24);
             this.ConnectButton.TabIndex = 1;
             this.ConnectButton.Text = "Connect";
             this.ConnectButton.UseVisualStyleBackColor = true;
@@ -145,13 +135,9 @@ namespace ChatR.ChatClient
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer)).EndInit();
             this.SplitContainer.ResumeLayout(false);
             this.SplitContainer2.Panel1.ResumeLayout(false);
+            this.SplitContainer2.Panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer2)).EndInit();
             this.SplitContainer2.ResumeLayout(false);
-            this.SplitContainer3.Panel1.ResumeLayout(false);
-            this.SplitContainer3.Panel1.PerformLayout();
-            this.SplitContainer3.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.SplitContainer3)).EndInit();
-            this.SplitContainer3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -196,7 +182,9 @@ namespace ChatR.ChatClient
 
         public void OnLeave(string name)
         {
-            _messagesListView.Items.Append(string.Format("User [{0}] has left the ChatRoom", name));
+            var item = new ListViewItem(string.Format("User [{0}] has left the ChatRoom", name), name);
+            item.ForeColor = Color.Red;
+            _messagesListView.Items.Append(item);
             _usersListView.Items.RemoveByKey(name);
         }
 
@@ -210,8 +198,8 @@ namespace ChatR.ChatClient
 
         private System.Windows.Forms.SplitContainer SplitContainer2;
         private System.Windows.Forms.Button ConnectButton;
-        private System.Windows.Forms.SplitContainer SplitContainer3;
         private System.Windows.Forms.TextBox NameBox;
+        private Button AvatarButton;
 
 
        

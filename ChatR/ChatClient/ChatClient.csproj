@@ -76,6 +76,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AvatarSelector.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AvatarSelector.Designer.cs">
+      <DependentUpon>AvatarSelector.cs</DependentUpon>
+    </Compile>
     <Compile Include="ChatClient.cs" />
     <Compile Include="IChatREvents.cs" />
     <Compile Include="ImagePoster.cs" />
@@ -88,6 +94,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AvatarSelector.resx">
+      <DependentUpon>AvatarSelector.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
