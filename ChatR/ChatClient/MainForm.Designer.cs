@@ -35,8 +35,8 @@ namespace ChatR.ChatClient
             this.InputBox = new System.Windows.Forms.TextBox();
             this.SplitContainer2 = new System.Windows.Forms.SplitContainer();
             this.AvatarButton = new System.Windows.Forms.Button();
-            this.NameBox = new System.Windows.Forms.TextBox();
             this.ConnectButton = new System.Windows.Forms.Button();
+            this.NameBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer)).BeginInit();
             this.SplitContainer.Panel1.SuspendLayout();
             this.SplitContainer.Panel2.SuspendLayout();
@@ -98,16 +98,6 @@ namespace ChatR.ChatClient
             this.AvatarButton.UseVisualStyleBackColor = true;
             this.AvatarButton.Click += new System.EventHandler(this.AvatarButton_Click);
             // 
-            // NameBox
-            // 
-            this.NameBox.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.NameBox.Location = new System.Drawing.Point(34, 2);
-            this.NameBox.Name = "NameBox";
-            this.NameBox.Size = new System.Drawing.Size(92, 20);
-            this.NameBox.TabIndex = 0;
-            this.NameBox.TextChanged += new System.EventHandler(this.NameBox_TextChanged);
-            this.NameBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.NameBox_KeyDown);
-            // 
             // ConnectButton
             // 
             this.ConnectButton.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -121,12 +111,23 @@ namespace ChatR.ChatClient
             this.ConnectButton.UseVisualStyleBackColor = true;
             this.ConnectButton.Click += new System.EventHandler(this.ConnectButton_Click);
             // 
+            // NameBox
+            // 
+            this.NameBox.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.NameBox.Location = new System.Drawing.Point(34, 2);
+            this.NameBox.Name = "NameBox";
+            this.NameBox.Size = new System.Drawing.Size(92, 20);
+            this.NameBox.TabIndex = 0;
+            this.NameBox.TextChanged += new System.EventHandler(this.NameBox_TextChanged);
+            this.NameBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.NameBox_KeyDown);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1008, 602);
             this.Controls.Add(this.SplitContainer);
+            this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "ChatR Client";
             this.SplitContainer.Panel1.ResumeLayout(false);
