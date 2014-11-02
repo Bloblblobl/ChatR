@@ -9,11 +9,11 @@ using System.Windows.Forms;
 
 namespace ChatR.ChatClient
 {
-    using settings = Properties.Settings;
     using System.IO;
     using System.Net;
     using System.Collections.Specialized;
     using System.Web.Script.Serialization;
+    using settings = Properties.Settings;
 
     public partial class MainForm : Form
     {
@@ -53,24 +53,12 @@ namespace ChatR.ChatClient
 
         private void UpdateSelectorButtonImage()
         {
-            var image = GetAvatarImage(Properties.Settings.Default.AvatarURL);
+            var image = AvatarSelector.GetAvatarImage(Properties.Settings.Default.AvatarURL);
             var avatar = image.GetThumbnailImage(AvatarButton.Width - 5, AvatarButton.Height - 5, null, IntPtr.Zero);
             AvatarButton.Image = avatar;
         }
 
-        public static string CreateRandomName(int length)
-        {
-            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            var stringChars = new char[length];
-            var random = new Random();
-
-            for (int i = 0; i < stringChars.Length; i++)
-            {
-                stringChars[i] = chars[random.Next(chars.Length)];
-            }
-
-            return new string(stringChars);
-        }
+        
 
         private ListView CreateListView(string title)
         {
@@ -103,45 +91,6 @@ namespace ChatR.ChatClient
 
             // Add the ListView to the control collection. 
             return listView;
-        }
-
-        private static Image GetAvatarImage(string url)
-        {
-            var filePath = @"Avatars/" + Properties.Settings.Default.Avatar;
-            if (File.Exists(filePath))
-            {
-                return Bitmap.FromFile(filePath);
-            }
-
-            // fetch avatar from URL
-            using (var w = new WebClient())
-            {
-                w.Headers.Add("Authorization", ImagePoster.IMGUR_CLIENT_ID);
-                var json = w.DownloadString(url);
-                var jss = new JavaScriptSerializer();
-                dynamic data = jss.DeserializeObject(json);
-                var link = data["data"]["link"];
-                var filename = CreateRandomName(5) + ".png";
-                w.DownloadFile(link, filename);
-            }
-            return Bitmap.FromFile(settings.Default.Avatar);
-        }
-
-        public static void UpdateAvatarImage(string url)
-        {
-            var filePath = @"Avatars/" + Properties.Settings.Default.Avatar;
-
-            // fetch avatar from URL
-            using (var w = new WebClient())
-            {
-                w.Headers.Add("Authorization", ImagePoster.IMGUR_CLIENT_ID);
-                var json = w.DownloadString(url);
-                var jss = new JavaScriptSerializer();
-                dynamic data = jss.DeserializeObject(json);
-                var link = data["data"]["link"];
-                w.Headers.Remove("Authorization");
-                w.DownloadFile(link, filePath);
-            }
         }
 
         private void Form1_Load(object sender, System.EventArgs e)

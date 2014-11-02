@@ -172,7 +172,7 @@ namespace ChatR.ChatClient
             var name = tokens[0];
             var url = tokens[1];
 
-            var image = GetAvatarImage(url);
+            var image = AvatarSelector.GetAvatarImage(url);
 
             // add the image indexed by username to the imagelist
             _avatars.Images.Add(name, image);
