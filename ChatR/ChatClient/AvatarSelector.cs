@@ -13,55 +13,69 @@ namespace ChatR.ChatClient
     using settings = Properties.Settings;
     using System.Web.Script.Serialization;
     using System.Net;
+    using ChatR.Common;
+    using System.Threading;
 
     public partial class AvatarSelector : Form
     {
-        static string _filePath = @"Avatars/" + Properties.Settings.Default.Avatar;
-
         public AvatarSelector()
         {
             InitializeComponent();
         }
 
-        public static string CreateRandomName(int length)
+        public static string CreateFileName(string url)
         {
-            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            var stringChars = new char[length];
-            var random = new Random();
-
-            for (int i = 0; i < stringChars.Length; i++)
-            {
-                stringChars[i] = chars[random.Next(chars.Length)];
-            }
-
-            return new string(stringChars);
+            var filename = "Avatars/" + Shared.EncodeURL(url) + ".png";
+            return filename;
         }
 
         public static Image GetAvatarImage(string url)
         {
-
-            if (File.Exists(_filePath))
+            // generate avatar filename based on url
+            var filename = CreateFileName(url);
+            try
             {
-                return Bitmap.FromFile(_filePath);
+                if (!File.Exists(filename))
+                {
+                    // fetch avatar from URL
+                    using (var w = new WebClient())
+                    {
+                        w.Headers.Add("Authorization", ImagePoster.IMGUR_CLIENT_ID);
+                        var json = w.DownloadString(url);
+                        var jss = new JavaScriptSerializer();
+                        dynamic data = jss.DeserializeObject(json);
+                        var link = data["data"]["link"];
+                        DownloadFile(link, filename);
+                    }
+                }
+                return Bitmap.FromFile(filename);
             }
-
-            return FetchAvatarFromImgur(url);
+            catch (Exception e)
+            {
+                // if failed to retrieve custom avatar, return default avatar
+                var defaultFile = "Avatars/Avatar.png";
+                return Bitmap.FromFile(defaultFile);
+            }
         }
 
-        private static Image FetchAvatarFromImgur(string url)
+        private static void DownloadFile(string url, string filename)
         {
-            // fetch avatar from URL
-            using (var w = new WebClient())
+            var w = new WebClient();
+            for (var i = 0; i < 5; i++)
             {
-                w.Headers.Add("Authorization", ImagePoster.IMGUR_CLIENT_ID);
-                var json = w.DownloadString(url);
-                var jss = new JavaScriptSerializer();
-                dynamic data = jss.DeserializeObject(json);
-                var link = data["data"]["link"];
-                var filename = CreateRandomName(5) + ".png";
-                w.DownloadFile(link, filename);
+                try
+                {
+                    w.DownloadFile(url, filename);
+                }
+                catch (Exception e)
+                {
+                    if (i > 3)
+                    {
+                        throw;
+                    }
+                    Thread.Sleep(100);
+                }
             }
-            return Bitmap.FromFile(settings.Default.Avatar);
         }
 
         private static Image DownloadImage(string url)
@@ -70,16 +84,16 @@ namespace ChatR.ChatClient
             // fetch image from URL
             using (var w = new WebClient())
             {
-                w.DownloadFile(url, _filePath);
+                w.DownloadFile(url, CreateFileName(url));
             }
             return Bitmap.FromFile(settings.Default.Avatar);
         }
 
-        public static void UpdateAvatarImage()
+        public static void UpdateAvatarImage(string filename)
         {
             
 
-            var url = ImagePoster.PostToImgur(_filePath);
+            var url = ImagePoster.PostToImgur(filename);
 
             Properties.Settings.Default.AvatarURL = url;
             Properties.Settings.Default.Save();
@@ -102,7 +116,7 @@ namespace ChatR.ChatClient
         {
             var text = TextBox.Text;
             var url = "";
-
+            var filename = Properties.Settings.Default.Avatar;
             if (text.StartsWith("http"))
             {
                 // If it is a URL
@@ -121,9 +135,11 @@ namespace ChatR.ChatClient
                 }
                 url = text;
                 DownloadImage(url);
+                filename = CreateFileName(url);
             }
             else
             {
+
                 // If it is a file
                 if (!File.Exists(text))
                 {
@@ -131,11 +147,12 @@ namespace ChatR.ChatClient
                     return;
                 }
                 url = ImagePoster.PostToImgur(text);
-                File.Copy(text, _filePath, true);
+                filename = CreateFileName(url);
+                File.Copy(text, filename, true);
                 TextBox.Text = url;
             }
 
-            UpdateAvatarImage();
+            UpdateAvatarImage(filename);
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
